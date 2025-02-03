@@ -1,12 +1,13 @@
 from logging.config import fileConfig
 
-from sqlalchemy import engine_from_config, URL
+from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-from environs import Env
-
-from database.models import Base
-
 from alembic import context
+
+from database.models import *
+from base_setting import base_settings
+
+
 
 
 config = context.config
@@ -15,21 +16,9 @@ config = context.config
 if config.config_file_name is not None:
     fileConfig(config.config_file_name)
 
-env = Env()
-env.read_env('.env')
-
-
-url = URL.create(
-    drivername=f"postgresql+asyncpg",
-    host=env.str("DB_HOST"),
-    password=env.str("POSTGRES_PASSWORD"),
-    username=env.str("POSTGRES_USER"),
-    database=env.str("POSTGRES_DB"),
-    port=5432,
-).render_as_string(hide_password=False)
 
 config.set_main_option("sqlalchemy.url",
-                       url + '?async_fallback=True')
+                       base_settings.get_sql_url() + '?async_fallback=True')
 
 target_metadata = Base.metadata
 

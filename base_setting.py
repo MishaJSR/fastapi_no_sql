@@ -1,52 +1,25 @@
 from pydantic_settings import BaseSettings
+from sqlalchemy import URL
 
 
 class Settings(BaseSettings):
-    API_ID: str
-    API_HASH: str
-    BOT_NAME: str
-    PWD: str
-    STATIC_STATUS: str
-    STATIC_REG: str
-    CONTAINER_TG_NAME: str
-    CONTAINER_FAST_NAME: str
+    DB_DRIVER: str
+    POSTGRES_USER: str
+    POSTGRES_PASSWORD: str
+    POSTGRES_DB: str
+    DB_HOST: str
+    DB_PORT: int
 
-    def get_id(self):
-        return self.API_ID
-
-    def get_hash(self):
-        return self.API_HASH
-
-    def get_bot_name(self):
-        return self.BOT_NAME
-
-    def get_pwd(self):
-        return self.PWD
-
-    def get_status(self):
-        return self.STATIC_STATUS
-
-    def get_reg(self):
-        return self.STATIC_REG
-
-    def get_tg_container(self):
-        return self.CONTAINER_TG_NAME
-
-    def get_fast_container(self):
-        return self.CONTAINER_FAST_NAME
-
-    def get_yt_dlp_options(self):
-        return {
-            'outtmpl': f'{self.PWD}/media/%(title)s.%(ext)s',
-            'cookiefile': 'cookies.txt',
-            'format': 'bestvideo[height=720][ext=mp4]+bestaudio',
-            'merge_output_format': 'mp4',
-            'progress_hooks': [],
-            'quiet': True,
-            "ffmpeg_location": "/usr/bin/ffmpeg",
-            "noprogress": True
-        }
-
+    def get_sql_url(self):
+        url = URL.create(
+            drivername=self.DB_DRIVER,
+            host=self.DB_HOST,
+            password=self.POSTGRES_PASSWORD,
+            username=self.POSTGRES_USER,
+            database=self.POSTGRES_DB,
+            port=self.DB_PORT,
+        ).render_as_string(hide_password=False)
+        return url
 
 
 

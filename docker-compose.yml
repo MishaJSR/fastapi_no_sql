@@ -1,0 +1,30 @@
+services:
+#  fastapi:
+#    container_name: "fastapi"
+#    stop_signal: SIGINT
+#    command: python3 -m main
+#    restart: always
+#    logging:
+#      driver: "json-file"
+#      options:
+#        max-size: "200k"
+#        max-file: "10"
+
+  pg_database:
+    image: postgres:14-alpine
+    container_name: "pg_database"
+    ports:
+      - "5432:5432"
+    restart: always
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    env_file:
+      - .env
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
+
+volumes:
+  pgdata: { }
