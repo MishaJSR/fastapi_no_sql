@@ -5,6 +5,8 @@ import uvicorn
 from contextlib import asynccontextmanager
 import betterlogging as bl
 
+from game.game_router import router as game_router
+
 main_router = APIRouter(prefix="/api/v1")
 
 
@@ -28,7 +30,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 
-#main_router.include_router(router)
+main_router.include_router(game_router)
+app.include_router(main_router)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="127.0.0.1", port=8002)

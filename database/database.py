@@ -9,7 +9,7 @@ metadata = MetaData()
 
 DATABASE_URL = base_settings.get_sql_url()
 
-engine = create_async_engine(DATABASE_URL, echo=True, poolclass=NullPool)
+engine = create_async_engine(DATABASE_URL, echo=False, poolclass=NullPool)
 async_session_maker = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
 
 
