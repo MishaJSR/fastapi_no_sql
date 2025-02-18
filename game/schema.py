@@ -31,15 +31,23 @@ class ConstructAddGame(BaseModel):
 
 
 class ConstructRemoveGame(BaseModel):
-    match_uuid4: UUID4 = Field(strict=True)
+    id: UUID4 = Field(strict=True)
 
     @classmethod
     def as_query(cls,
-                 match_uuid4: UUID4 = Query(...,
+                 id: UUID4 = Query(...,
                                      example="0637e3b9-bea1-4aed-a8bc-8272235e946b",
                                      description="Match uuid4"),
                  ):
-        return cls(match_uuid4=match_uuid4)
+        return cls(id=id)
+
+
+class ResponseRemoveGame(BaseModel):
+    id: UUID4 = Field(
+        strict=True,
+        examples=["3422b448-2460-4fd2-9183-8000de6f8343"],
+        description="Match id deleted",
+    )
 
 
 class ResponseAllGame(BaseModel):

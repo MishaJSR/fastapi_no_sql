@@ -4,7 +4,10 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 from alembic import context
 
-from database.models import *
+from database.database import Base
+from database.models.Game import Game
+from database.models.Stadium import Stadium
+
 from base_setting import base_settings
 
 
