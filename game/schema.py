@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 
 from pydantic import BaseModel, Field
 from fastapi import Query
@@ -50,18 +51,18 @@ class ResponseRemoveGame(BaseModel):
     )
 
 
-class ResponseAllGame(BaseModel):
+class ResponseAllGames(BaseModel):
     id: UUID4 = Field(
         strict=True,
         examples=["3422b448-2460-4fd2-9183-8000de6f8343"],
         description="Match id",
     )
-    m_date: str = Field(
+    m_date: datetime = Field(
         strict=True,
-        examples=[""],
-        description="Match date",
+        examples=["2025-02-03T14:30:00"],
+        description="Match data",
     )
-    stadium: str = Field(
+    stadium_id: UUID4 = Field(
         strict=True,
         examples=["National Stadium, Warsaw"],
         description="Stadium name",
@@ -81,6 +82,24 @@ class ResponseAllGame(BaseModel):
 class ResponsePostGame(BaseModel):
     id: UUID4 = Field(
         strict=True,
+        examples=["3422b448-2460-4fd2-9183-8000de6f8343"],
+        description="UUID4 game in str",
+    )
+
+class CreateStadium(BaseModel):
+    name: str = Field(strict=True)
+    build_date: Optional[datetime] = Field(default="2025-02-03T14:30:00")
+
+
+class CreateGame(BaseModel):
+    m_date: Optional[datetime] = Field(default="2025-02-03T14:30:00")
+    team1: str = Field(strict=True)
+    team2: str = Field(strict=True)
+    stadium_id: UUID4
+
+class CreateStadiumID(BaseModel):
+    id: UUID4 = Field(
+        strict=False,
         examples=["3422b448-2460-4fd2-9183-8000de6f8343"],
         description="UUID4 game in str",
     )

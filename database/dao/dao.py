@@ -4,8 +4,8 @@ from database.models.Stadium import Stadium
 
 
 class StadiumDao(BaseDAO):
-    model = Game
+    model = Stadium
 
 
 class GameDao(BaseDAO):
-    model = Stadium
+    model = Game
