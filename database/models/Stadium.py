@@ -1,6 +1,6 @@
 import uuid
 
-from sqlalchemy import TIMESTAMP, String, DateTime, func, Integer
+from sqlalchemy import TIMESTAMP, String, DateTime, func, Integer, ForeignKey
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import mapped_column, Mapped, DeclarativeBase, relationship
 
@@ -14,6 +14,12 @@ class Stadium(Base):
     game: Mapped["Game"] = relationship(
         "Game",
         back_populates="stadium",
-        uselist=True,  # Обеспечивает связь один-к-многим
-        lazy="selectin"  # Автоматически загружает связанные данные из Bonds_calc при запросе Bond
+        uselist=True,
+        lazy="selectin"
+    )
+    country_id: Mapped[UUID] = mapped_column(UUID, ForeignKey("countrys.id", ondelete="CASCADE"), nullable=False)
+    country: Mapped["Country"] = relationship(
+        "Country",
+        back_populates="stadium",
+        uselist=True
     )

@@ -5,9 +5,12 @@ import uvicorn
 from contextlib import asynccontextmanager
 import betterlogging as bl
 
-from game.game_router import router as game_router
+from routers.game.game_router import router as game_router
+from routers.auth.auth_router import router as auth_router
+from routers.stadium.stadium_router import router as stadium_router
+from routers.country.country_router import router as country_router
 
-main_router = APIRouter(prefix="/api/v1")
+
 
 
 def setup_logging():
@@ -29,8 +32,10 @@ async def lifespan(app: FastAPI):
 
 
 app = FastAPI(lifespan=lifespan)
-
-main_router.include_router(game_router)
+main_router = APIRouter(prefix="/api/v1")
+routers = [game_router, auth_router, country_router, stadium_router]
+for router in routers:
+    main_router.include_router(router)
 app.include_router(main_router)
 
 if __name__ == "__main__":

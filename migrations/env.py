@@ -7,8 +7,10 @@ from alembic import context
 from database.database import Base
 from database.models.Game import Game
 from database.models.Stadium import Stadium
+from database.models.Country import Country
+from database.models.User import User
 
-from base_setting import base_settings
+from settings import settings
 
 
 
@@ -21,7 +23,7 @@ if config.config_file_name is not None:
 
 
 config.set_main_option("sqlalchemy.url",
-                       base_settings.get_sql_url() + '?async_fallback=True')
+                       settings.get_sql_url() + '?async_fallback=True')
 
 target_metadata = Base.metadata
 

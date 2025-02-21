@@ -17,5 +17,5 @@ class Game(Base):
     stadium: Mapped["Stadium"] = relationship(
         "Stadium",
         back_populates="game",
-        uselist=False
+        uselist=True
     )

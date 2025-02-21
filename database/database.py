@@ -4,11 +4,11 @@ from sqlalchemy import MetaData, NullPool
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker, AsyncAttrs
 from sqlalchemy.orm import DeclarativeBase, declared_attr, class_mapper
 
-from base_setting import base_settings
+from settings import settings
 
 metadata = MetaData()
 
-DATABASE_URL = base_settings.get_sql_url()
+DATABASE_URL = settings.get_sql_url()
 
 engine = create_async_engine(DATABASE_URL, echo=False, poolclass=NullPool)
 async_session_maker = async_sessionmaker(bind=engine, class_=AsyncSession, expire_on_commit=False)
