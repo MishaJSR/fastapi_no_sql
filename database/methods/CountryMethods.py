@@ -18,13 +18,13 @@ async def add_country(country_data: dict, session):
 
 
 @connection
-async def get_games_by_country_id(country_id: uuid.UUID, session: AsyncSession):
+async def get_games_by_country_id(country_id: uuid.UUID, offset: int, limit: int,session: AsyncSession):
     st_time = time.time()
     stmt = (
         select(Game)
         .join(Game.stadium)
         .join(Stadium.country)
-        .where(Country.id == country_id)
+        .where(Country.id == country_id).offset(offset).limit(limit)
     )
     result = await session.execute(stmt)
     end_time = time.time() - st_time

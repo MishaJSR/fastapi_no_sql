@@ -7,17 +7,12 @@ from fastapi import APIRouter, Depends, HTTPException
 from database.methods.StadiumMethods import add_stadium
 from routers.stadium.schemas import CreateStadium, ResponseStadiumAdd, ResponseSuccessAddThousandStadium
 from routers.country.schemas import CreateCountryID
+from routers.utils import generate_random_word
 
 router = APIRouter(
     prefix="/stadium",
     tags=["Stadium"]
 )
-
-
-def generate_random_word(length=10):
-    letters = string.ascii_letters  # Все буквы (заглавные и строчные)
-    random_word = ''.join(random.choice(letters) for _ in range(length))
-    return random_word
 
 
 @router.post("/add_stadium",

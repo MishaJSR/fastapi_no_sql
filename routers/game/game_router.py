@@ -9,6 +9,7 @@ from database.methods.GameMethods import select_all_games, add_game, get_games_b
 from routers.country.schemas import CreateCountryID
 from routers.game.schemas import ResponseAllGames, ResponsePostGame, CreateGame, ResponseSuccessAddThousandGame
 from routers.stadium.schemas import CreateStadiumID
+from routers.utils import generate_random_word
 
 router = APIRouter(
     prefix="/game",
@@ -16,18 +17,12 @@ router = APIRouter(
 )
 
 
-def generate_random_word(length=10):
-    letters = string.ascii_letters  # Все буквы (заглавные и строчные)
-    random_word = ''.join(random.choice(letters) for _ in range(length))
-    return random_word
-
-
 @router.get("/",
             response_model=list[ResponseAllGames],
             summary="Посмотреть список всех игр",
             description="Позволяет посмотреть список всех игр")
-async def check_all_games() -> list[ResponseAllGames]:
-    games = await select_all_games()
+async def check_all_games(offset: int = 0, limit: int = 100) -> list[ResponseAllGames]:
+    games = await select_all_games(offset=offset, limit=limit)
     return [ResponseAllGames(**game.to_dict()) for game in games]
 
 
@@ -47,8 +42,9 @@ async def add_game_by_p(data: CreateGame = Depends(CreateGame.as_query)) -> Resp
             response_model=list[ResponseAllGames],
             summary="Посмотреть список всех игр по UUID стадиона",
             description="Посмотреть список всех игр по UUID стадиона. Используются query параметры")
-async def get_all_games_by_stadium(data: CreateStadiumID = Depends(CreateStadiumID.as_query)) -> list[ResponseAllGames]:
-    games = await get_games_by_stadium(stadium_id=data.id)
+async def get_all_games_by_stadium(data: CreateStadiumID = Depends(CreateStadiumID.as_query),
+                                   offset: int = 0, limit: int = 100) -> list[ResponseAllGames]:
+    games = await get_games_by_stadium(stadium_id=data.id, offset=offset, limit=limit)
     if games:
         return [ResponseAllGames(**game.to_dict()) for game in games]
     else:
@@ -59,8 +55,9 @@ async def get_all_games_by_stadium(data: CreateStadiumID = Depends(CreateStadium
             response_model=list[ResponseAllGames],
             summary="Посмотреть список всех игр в стране",
             description="Посмотреть список всех игр в стране по UUID страны. Используются query параметры")
-async def add_country_by_p(data: CreateCountryID = Depends(CreateCountryID.as_query)) -> list[ResponseAllGames]:
-    games = await get_games_by_country_id(country_id=data.id)
+async def add_country_by_p(data: CreateCountryID = Depends(CreateCountryID.as_query),
+                           offset: int = 0, limit: int = 100) -> list[ResponseAllGames]:
+    games = await get_games_by_country_id(country_id=data.id, offset=offset, limit=limit)
     if games:
         return [ResponseAllGames(**game.to_dict()) for game in games]
     else:
