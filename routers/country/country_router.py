@@ -22,7 +22,7 @@ def generate_random_word(length=10):
              response_model=ResponsePostCountry,
              summary="Добавить страну",
              description="Позволяет добавить страну. Используются query параметры")
-async def add_country_by_p(data: CreateCountry = Depends(CreateCountry.as_query)):
+async def add_country_by_p(data: CreateCountry = Depends(CreateCountry.as_query)) -> ResponsePostCountry:
     res = await add_country(country_data=data.model_dump())
     if res:
         return ResponsePostCountry(id=res)

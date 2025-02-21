@@ -24,7 +24,7 @@ def generate_random_word(length=10):
              response_model=ResponseStadiumAdd,
              summary="Добавить стадион",
              description="Позволяет добавить стадион. Используются query параметры")
-async def add_stadium_by_p(data: CreateStadium = Depends(CreateStadium.as_query)):
+async def add_stadium_by_p(data: CreateStadium = Depends(CreateStadium.as_query)) -> ResponseStadiumAdd:
     res = await add_stadium(stadium_data=data.model_dump())
     if res:
         return ResponseStadiumAdd(id=res)
@@ -37,7 +37,7 @@ async def add_stadium_by_p(data: CreateStadium = Depends(CreateStadium.as_query)
              summary="Добавляет в таблицу 1000 стадионов с рандомными названиями",
              description="Позволяет создать 1000 стадионов с UUID переданной страны.\n"
                          " Испольуются query параметры")
-async def add_a_by_p(data: CreateCountryID = Depends(CreateCountryID.as_query)):
+async def add_a_by_p(data: CreateCountryID = Depends(CreateCountryID.as_query)) -> ResponseSuccessAddThousandStadium:
     for el in range(1000):
         some_dict = {
             "name": generate_random_word(),

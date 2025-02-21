@@ -23,19 +23,19 @@ def generate_random_word(length=10):
 
 
 @router.get("/",
-            # response_model=list[ResponseAllGame],
+            response_model=list[ResponseAllGames],
             summary="Посмотреть список всех игр",
             description="Позволяет посмотреть список всех игр")
-async def check_all_games():
-    result = await select_all_games()
-    return result
+async def check_all_games() -> list[ResponseAllGames]:
+    games = await select_all_games()
+    return [ResponseAllGames(**game.to_dict()) for game in games]
 
 
 @router.post("/add_game",
              response_model=ResponsePostGame,
              summary="Добавить игру",
              description="Позволяет добавить игру. Используются query параметры")
-async def add_game_by_p(data: CreateGame = Depends(CreateGame.as_query)):
+async def add_game_by_p(data: CreateGame = Depends(CreateGame.as_query)) -> ResponsePostGame:
     res = await add_game(game_data=data.model_dump())
     if res:
         return ResponsePostGame(id=res)
@@ -47,7 +47,7 @@ async def add_game_by_p(data: CreateGame = Depends(CreateGame.as_query)):
             response_model=list[ResponseAllGames],
             summary="Посмотреть список всех игр по UUID стадиона",
             description="Посмотреть список всех игр по UUID стадиона. Используются query параметры")
-async def get_all_games_by_stadium(data: CreateStadiumID = Depends(CreateStadiumID.as_query)):
+async def get_all_games_by_stadium(data: CreateStadiumID = Depends(CreateStadiumID.as_query)) -> list[ResponseAllGames]:
     games = await get_games_by_stadium(stadium_id=data.id)
     if games:
         return [ResponseAllGames(**game.to_dict()) for game in games]
@@ -59,7 +59,7 @@ async def get_all_games_by_stadium(data: CreateStadiumID = Depends(CreateStadium
             response_model=list[ResponseAllGames],
             summary="Посмотреть список всех игр в стране",
             description="Посмотреть список всех игр в стране по UUID страны. Используются query параметры")
-async def add_country_by_p(data: CreateCountryID = Depends(CreateCountryID.as_query)):
+async def add_country_by_p(data: CreateCountryID = Depends(CreateCountryID.as_query)) -> list[ResponseAllGames]:
     games = await get_games_by_country_id(country_id=data.id)
     if games:
         return [ResponseAllGames(**game.to_dict()) for game in games]
@@ -72,7 +72,7 @@ async def add_country_by_p(data: CreateCountryID = Depends(CreateCountryID.as_qu
              summary="Добавляет в таблицу 10000 игр с рандомными командами",
              description="Позволяет создать 10000 игр с UUID переданного стадиона.\n"
                          " Испольуются query параметры")
-async def add_a_by_p(data: CreateStadiumID = Depends(CreateStadiumID.as_query)):
+async def add_a_by_p(data: CreateStadiumID = Depends(CreateStadiumID.as_query)) -> ResponseSuccessAddThousandGame:
     for el in range(10000):
         some_dict = {
             "m_date": datetime.datetime.now(),
