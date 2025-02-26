@@ -40,6 +40,4 @@ async def add_a_by_p(data: CreateCountryID = Depends(CreateCountryID.as_query)) 
             "country_id": data.id
         }
         _ = await add_stadium(stadium_data=some_dict)
-        return ResponseSuccessAddThousandStadium(status="Success add all stadiums")
-    else:
-        raise HTTPException(status_code=400, detail="Ошибка добавления или UUID страны не найден")
+    return ResponseSuccessAddThousandStadium(status="Success add all stadiums")
