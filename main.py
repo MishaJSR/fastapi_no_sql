@@ -9,6 +9,7 @@ from routers.game.game_router import router as game_router
 from routers.auth.auth_router import router as auth_router
 from routers.stadium.stadium_router import router as stadium_router
 from routers.country.country_router import router as country_router
+from routers.elast.elastic import router as elastic_router
 
 
 
@@ -33,7 +34,7 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(lifespan=lifespan)
 main_router = APIRouter(prefix="/api/v1")
-routers = [game_router, auth_router, country_router, stadium_router]
+routers = [game_router, auth_router, country_router, stadium_router, elastic_router]
 for router in routers:
     main_router.include_router(router)
 app.include_router(main_router)
