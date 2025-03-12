@@ -1,6 +1,4 @@
 import json
-import logging
-import os
 
 from elasticsearch import Elasticsearch
 from fastapi import HTTPException, APIRouter
@@ -10,7 +8,7 @@ router = APIRouter(
     tags=["Elsstic"]
 )
 
-es = Elasticsearch("http://172.18.0.3:9200", verify_elasticsearch=False)
+es = Elasticsearch("http://elasticsearch:9200", verify_elasticsearch=False)
 
 @router.post("/add_document/")
 async def add_document(index_name: str, doc_id: int, name: str, description: str):

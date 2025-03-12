@@ -1,14 +1,14 @@
 services:
-#  fastapi:
-#    container_name: "fastapi"
-#    stop_signal: SIGINT
-#    command: python3 -m main
-#    restart: always
-#    logging:
-#      driver: "json-file"
-#      options:
-#        max-size: "200k"
-#        max-file: "10"
+  fastapi:
+    container_name: "fastapi"
+    stop_signal: SIGINT
+    command: python3 -m main
+    restart: always
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "200k"
+        max-file: "10"
 
   pg_database:
     image: postgres:14-alpine
@@ -28,7 +28,7 @@ services:
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:latest
-    container_name: elasticsearch
+    container_name: "elasticsearch"
     environment:
       - discovery.type=single-node
       - ES_JAVA_OPTS=-Xms512m -Xmx512m

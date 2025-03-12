@@ -9,8 +9,6 @@ class Settings(BaseSettings):
     POSTGRES_DB: str
     DB_HOST: str
     DB_PORT: int
-    SECRET_KEY: str
-    ALGORITHM: str
 
     def get_sql_url(self):
         url = URL.create(
@@ -22,9 +20,6 @@ class Settings(BaseSettings):
             port=self.DB_PORT,
         ).render_as_string(hide_password=False)
         return url
-
-    def get_auth_data(self):
-        return {"secret_key": self.SECRET_KEY, "algorithm": self.ALGORITHM}
 
 
 
