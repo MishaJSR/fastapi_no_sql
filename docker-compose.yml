@@ -1,8 +1,17 @@
 services:
   fastapi:
-    container_name: "fastapi"
+    image: "fastapi-service"
     stop_signal: SIGINT
-    command: python3 -m main
+    build:
+      context: ./fastapi-service/src
+    links:
+      - pg-database
+      - tg-bot
+    stdin_open: true
+    command: >
+      sh -c "poetry run python3 -m main"
+    ports:
+      - "8000:8000"
     restart: always
     logging:
       driver: "json-file"
